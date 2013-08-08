@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+	
+	<head>
+		<title>Learn You Some Nashville Numbers</title>
+		<link href='http://fonts.googleapis.com/css?family=Chelsea+Market|Roboto' rel='stylesheet' type='text/css' />
+		<link type="text/css" href="css/normalize.css" rel="stylesheet" />
+		<link type="text/css" href="css/style.css" rel="stylesheet" />
+	</head>
+	
+	<body>
+		
+		<!-- templates -->
+		<script type="text/x-handlebars" data-template-name="application">
+			<h1><span class="smaller">Learn You Some<br></span>Nashville Numbers</h1>
+			<div id="nash">
+				{{partial "options" class="options"}}
+				{{view App.CorrectView}}
+				{{view App.IncorrectView}}
+				{{partial "status"}}
+				{{view Ember.ContainerView class="questions" currentViewBinding="App.State.currentQuestionView"}}
+				{{view Ember.ContainerView class="answers" currentViewBinding="App.State.currentAnswersView"}}
+			</div>
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="_options">
+			<div id="options">
+				<span>
+					{{render "keysOption"}}
+				</span>
+				<span>
+					questions:
+					{{view Ember.Select
+						contentBinding="App.questionTypes"
+						optionValuePath="content.value"
+						optionLabelPath="content.label"
+						valueBinding="App.State.questionType"
+					}}
+				</span>
+				<span>
+					numbers:
+					{{view Ember.Select
+						contentBinding="App.numberTypes"
+						optionValuePath="content.value"
+						optionLabelPath="content.label"
+						valueBinding="App.State.numberType"
+					}}
+				</span>
+			</div>
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="keysOption">
+			key:
+			{{view Ember.Select
+				contentBinding="this"
+				optionValuePath="content.id"
+				optionLabelPath="content.name"
+				valueBinding="App.State.key"
+				prompt="random"
+			}}
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="correct">
+			<div class="text">&#xe000;</div>
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="incorrect">
+			<div class="text">&#xe002;</div>
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="_status">
+			<div id="status">
+				<div>Current Streak<br><span>{{App.State.streak}}</span></div>
+				<div>Best Streak<br><span>{{App.State.bestStreak}}</span></div>
+			</div>
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="question">
+			In the key of <em>{{key.name}}</em><br>
+			what is the <em>{{chordName}}</em> chord?
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="letterAnswers">
+			{{render "letterAnswer"}}
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="numberAnswers">
+			{{render "numberAnswer"}}
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="letterAnswer">
+			{{#each model}}<div class="answer-square" data-noteid="{{unbound id}}">
+				{{name}}
+				{{#each App.types}}
+					{{#view App.AnswerView}}
+					<a class="answer" data-typeid="{{unbound this.value}}">
+						{{this.label}}
+					</a>
+					{{/view}}
+				{{/each}}
+			</div>{{/each}}
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="numberAnswer">
+			{{#each model}}<div class="answer-square">
+			{{#view App.AnswerView}}
+				<a class="answer" data-chordid="{{unbound this.id}}">{{this.name}}</a>
+			{{/view}}
+			</div>{{/each}}
+		</script>
+		
+		<script type="text/x-handlebars" data-template-name="number-answer">
+			<div class="answer-square"><a href="#" class="answer" nash-number="{{number}}">{{chord}}</a></div>
+		</script>
+		
+		<!--- scripts -->
+		<script src="js/libs/jquery-1.10.2.min.js"></script>
+		<script src="js/libs/handlebars-1.0.0-rc.4.js"></script>
+		<script src="js/libs/ember-1.0.0-rc.6.1.js"></script>
+		<script src="js/libs/ember-data-0.13.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/models/store.js"></script>
+		<script src="js/models/chord.js"></script>
+		<script src="js/models/note.js"></script>
+		<script src="js/models/question.js"></script>
+		<script src="js/models/type.js"></script>
+		<script src="js/controllers/application.js"></script>
+		<script src="js/controllers/keysOption.js"></script>
+		<script src="js/controllers/letterAnswer.js"></script>
+		<script src="js/controllers/numberAnswer.js"></script>
+		<script src="js/controllers/question.js"></script>
+		<script src="js/views/answer.js"></script>
+		<script src="js/views/correct.js"></script>
+		<script src="js/views/incorrect.js"></script>
+		<script src="js/views/letterAnswers.js"></script>
+		<script src="js/views/numberAnswers.js"></script>
+		<script src="js/views/question.js"></script>
+	</body>
+	
+</html>
